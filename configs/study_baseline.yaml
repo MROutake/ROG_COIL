@@ -1,0 +1,38 @@
+# study_baseline.yaml
+# ---------------------------------------------------------------------------
+# Parameter für einen vollständigen Charakterisierungs-Durchlauf.
+# Definiert Variationsbereiche für Parameterstudien.
+# ---------------------------------------------------------------------------
+
+study:
+  name: "Baseline-Charakterisierung"
+  description: "Standard-Analysedurchlauf für PCB-Rogowski-Spule"
+
+  # Frequenzbereich für Impedanzanalyse [Hz]
+  frequency_range:
+    f_start_hz: 1.0e3
+    f_stop_hz: 100.0e6
+    num_points: 500
+    scale: "log"   # "log" oder "linear"
+
+  # Temperaturbereich für Widerstandsvariation [°C]
+  temperature_range:
+    t_min_celsius: -40.0
+    t_max_celsius: 125.0
+    t_nominal_celsius: 20.0
+
+  # Toleranzanalyse: prozentuale Variationsbreite
+  tolerance_analysis:
+    enabled: false
+    trace_width_percent: 10.0
+    trace_thickness_percent: 5.0
+    dielectric_thickness_percent: 8.0
+    num_monte_carlo_samples: 1000
+
+output:
+  # Exportformate für Berechnungsberichte
+  formats:
+    - "json"
+    - "markdown"
+  save_traces: true
+  report_dir: "output/reports"

@@ -1,0 +1,40 @@
+# defaults.yaml
+# ---------------------------------------------------------------------------
+# Anwendungsweite Default-Werte.
+# Werden geladen, wenn keine projektspezifische Konfiguration vorliegt.
+# ---------------------------------------------------------------------------
+
+application:
+  name: "PCB Rogowski Tool"
+  version: "0.1.0"
+
+  # Standardpfade (relativ zum Projektroot)
+  paths:
+    configs: "configs"
+    data_samples: "data_samples"
+    output: "output"
+    logs: "output/logs"
+
+logging:
+  level: "INFO"           # DEBUG | INFO | WARNING | ERROR
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  log_to_file: true
+  log_file: "output/logs/pcb_rogowski.log"
+
+ui:
+  # Standardfenstergroesse beim ersten Start [px]
+  window_width: 1400
+  window_height: 900
+
+  # Dezimalstellen in Ergebnistabellen
+  result_decimal_places: 4
+
+calculation:
+  # Standardmäßig Rechen-Trace mit speichern
+  save_trace: true
+
+  # Schwellwert für Warnungen: Resonanzfrequenz zu niedrig [MHz]
+  warn_resonance_below_mhz: 1.0
+
+  # Maximale akzeptable Serienwiderstand-Warnschwelle [Ω]
+  warn_resistance_above_ohm: 100.0

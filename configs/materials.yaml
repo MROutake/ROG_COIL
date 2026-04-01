@@ -1,0 +1,35 @@
+# materials.yaml
+# ---------------------------------------------------------------------------
+# Physikalische Materialkonstanten.
+# Alle Werte bei 20°C, sofern nicht anders angegeben.
+# ---------------------------------------------------------------------------
+
+copper:
+  # Spezifischer Widerstand [Ω·m]
+  resistivity_ohm_m: 1.72e-8
+
+  # Temperaturkoeffizient [1/K]
+  temperature_coefficient_per_k: 3.9e-3
+
+  # Relative Permeabilität
+  mu_r: 1.0
+
+  # Dichte [kg/m³] – für spätere thermische Berechnungen
+  density_kg_m3: 8960.0
+
+fr4:
+  # Relative Permittivität (bei 1 MHz)
+  epsilon_r: 4.5
+
+  # Verlustfaktor tan(δ) bei 1 MHz
+  loss_tangent: 0.02
+
+  # Glasübergangstemperatur [°C]
+  tg_celsius: 135.0
+
+constants:
+  # Magnetische Feldkonstante µ₀ [H/m]
+  mu_0: 1.2566370614e-6
+
+  # Elektrische Feldkonstante ε₀ [F/m]
+  epsilon_0: 8.8541878128e-12

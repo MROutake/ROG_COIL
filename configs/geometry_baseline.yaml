@@ -1,0 +1,44 @@
+# geometry_baseline.yaml
+# ---------------------------------------------------------------------------
+# Geometrische Baseline-Parameter der PCB-Rogowski-Spule.
+# Diese Werte werden für analytische Berechnungen verwendet, sofern keine
+# Board-spezifischen Werte aus dem ODB-Import vorliegen.
+# ---------------------------------------------------------------------------
+
+coil:
+  # Windungsanzahl (Gesamt, beide Lagen)
+  num_turns: 40
+
+  # Spurbreite der Windungsleiter [mm]
+  trace_width_mm: 0.15
+
+  # Spurabstand (Pitch) [mm]
+  trace_pitch_mm: 0.30
+
+  # Mittlerer Windungsradius (bei kreisförmiger Spule) [mm]
+  # Bei linearer Spule: halbe Spulenbreite
+  mean_radius_mm: 5.0
+
+  # Spulenhöhe (Stapelabstand zwischen Top- und Bottom-Kupfer) [mm]
+  coil_height_mm: 1.6
+
+via:
+  # Via-Bohrdurchmesser [mm]
+  drill_diameter_mm: 0.20
+
+  # Via-Pad-Durchmesser [mm]
+  pad_diameter_mm: 0.40
+
+  # Typ der Via-Verbindung: "through", "blind", "buried"
+  via_type: "through"
+
+busbar:
+  # Geometrie des Dual-Busbar-Primärleiters für M-Berechnung
+  # Busbar-Breite [mm]
+  width_mm: 10.0
+
+  # Busbar-Dicke [mm]
+  thickness_mm: 3.0
+
+  # Abstand Busbar-Mitte zu Spulenmitte [mm]
+  center_offset_mm: 0.0
