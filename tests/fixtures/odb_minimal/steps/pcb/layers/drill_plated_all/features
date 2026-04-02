@@ -1,0 +1,22 @@
+UNITS=MM
+#
+#Feature symbol names
+#
+$0 r196.8504
+
+#
+#Feature attribute names
+#
+@0 .geometry
+@1 .drill
+
+#
+#Feature attribute text strings
+#
+&0 VIA_RoundD393.7008H196.8504
+
+#
+#Layer features
+#
+# Via drill holes (is_via=True expected)
+P 15.0 5.0 0 P 0 0 ;0=0,1=2

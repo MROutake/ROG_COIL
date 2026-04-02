@@ -11,7 +11,7 @@ Neuaufbau des ursprünglichen Prototypen dar, strukturiert nach Clean-Architectu
 
 Das Tool ermöglicht die vollständige analytische Charakterisierung einer PCB-Rogowski-Spule:
 
-- **ODB++-Import** aus Altium Designer
+- **Gerber-Import (RS-274X / X2)** aus Altium Designer via `gerbonara`
 - **Interaktive Klassifikation** von Leiterbahnen und Via-Fenstern
 - **Analytische Berechnung** von $L_\text{track}$, $L_\text{vias}$, $L_s$, $R_s$, $C_s$, $f_R$
 - **Gegeninduktivitätsberechnung** $M_\text{ges}$ zum Dual-Busbar-Leiter
@@ -28,7 +28,7 @@ Das Projekt ist nach einer strikten Schichtenarchitektur aufgebaut:
 ui/          ← Nur Darstellung (PyQt6)
 app/         ← Use Cases und Orchestrierung
 domain/      ← Fachlogik, Formeln, Modelle (reine Python-Objekte)
-infrastructure/ ← ODB-Parser, YAML/JSON, Logging, Exportfunktionen
+infrastructure/ ← Gerber-Parser (gerbonara), YAML/JSON, Logging, Exportfunktionen
 agents/      ← KI-Agenten-Prompts für GitHub Copilot
 ```
 
@@ -88,7 +88,7 @@ pcb_rogowski_tool/
 │   │   ├── trace/         ← TraceClassification, ViaWindow
 │   │   ├── stackup/       ← Stackup, MaterialSet
 │   │   └── common/        ← CalculationTrace, TraceStep
-│   ├── infrastructure/    ← ODB-Loader, Persistenz, Export
+│   ├── infrastructure/    ← Gerber-Loader (gerbonara), Persistenz, Export
 │   ├── ui/                ← Desktop-GUI (PyQt6)
 │   ├── agents/prompts/    ← KI-Agenten-Prompts
 │   └── main.py
@@ -143,7 +143,7 @@ Das Projekt nutzt GitHub Copilot mit definierten Rollen:
 | Sprint | Ziel                                     | Status      |
 |--------|------------------------------------------|-------------|
 | 1      | Fundament: Gerüst, Tooling, Domain-Modelle | ✅ Abgeschlossen |
-| 2      | ODB-Parser & Board-Modell                | 🔲 Offen    |
+| 2      | Gerber-Parser & Board-Modell (gerbonara) | ✅ Abgeschlossen |
 | 3      | Rechenkern: CoilParameterService         | 🔲 Offen    |
 | 4      | MutualInductanceService                  | 🔲 Offen    |
 | 5      | GUI-Entkopplung                          | 🔲 Offen    |

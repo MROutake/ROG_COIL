@@ -1,0 +1,186 @@
+*************************************************************
+FileName = COIL_3.GBR
+AutoAperture = True
+*************************************************************
+Generating : Top Layer
+      File : COIL_3.GTL
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Mid-Layer 1
+      File : COIL_3.G1
+
+    Adding Layer      : Mid-Layer 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Bottom Layer
+      File : COIL_3.GBL
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Top Solder
+      File : COIL_3.GTS
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D13
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : COIL_3.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D13
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 1
+      File : COIL_3.GM1
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+    D10
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 2
+      File : COIL_3.GM2
+
+    Adding Layer      : Mechanical 2
+
+
+Used DCodes :
+    D14
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 3
+      File : COIL_3.GM3
+
+    Adding Layer      : Mechanical 3
+
+
+Used DCodes :
+    D11
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 15
+      File : COIL_3.GM15
+
+    Adding Layer      : Mechanical 15
+
+
+Used DCodes :
+    D15
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 32
+      File : COIL_3.GM32
+
+    Adding Layer      : Mechanical 32
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Profile
+      File : COIL_3.GM
+
+
+Used DCodes :
+    D16
+*************************************************************
+
+*************************************************************
+Generating : Non-plated through-hole drill file
+      File : COIL_3.GBR1
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Plated through-hole drill file
+      File : COIL_3.GBR2
+
+
+Used DCodes :
+    D17
+*************************************************************
+
+*************************************************************
+Generating : Drill Drawing
+      File : COIL_3.GD1
+
+    Adding Drill Pair : Top Layer-Bottom Layer
+
+    Adding Layer      : Drill Drawing
+
+
+Used DCodes :
+    D10
+    D19
+    D20
+*************************************************************
+
+*************************************************************
+Generating : Drill Guide
+      File : COIL_3.GG1
+
+    Adding Drill Pair : Top Layer-Bottom Layer
+
+    Adding Layer      : Drill Guide
+
+
+Used DCodes :
+    D19
+*************************************************************
+

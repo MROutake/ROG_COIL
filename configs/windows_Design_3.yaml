@@ -1,0 +1,805 @@
+design: Design_3
+h_via_mm: 1.12268
+n_windows: 50
+note: Manuell definierte Via-Fenster für M-Berechnung
+windows:
+- window_id: W0
+  x_min_mm: 111.341
+  y_min_mm: 60.2667
+  x_max_mm: 111.841
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0311
+  via_a_idx: 54
+  via_b_idx: 52
+  via_a_xy:
+  - 111.841
+  - 60.2667
+  via_b_xy:
+  - 111.341
+  - 64.2667
+- window_id: W1
+  x_min_mm: 113.341
+  y_min_mm: 60.8667
+  x_max_mm: 115.466
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0094
+  via_a_idx: 56
+  via_b_idx: 60
+  via_a_xy:
+  - 113.341
+  - 64.2667
+  via_b_xy:
+  - 115.466
+  - 60.8667
+- window_id: W2
+  x_min_mm: 115.341
+  y_min_mm: 61.4417
+  x_max_mm: 118.166
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 64
+  via_b_idx: 58
+  via_a_xy:
+  - 118.166
+  - 61.4417
+  via_b_xy:
+  - 115.341
+  - 64.2667
+- window_id: W3
+  x_min_mm: 117.341
+  y_min_mm: 63.9286
+  x_max_mm: 121.3657
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0389
+  via_a_idx: 62
+  via_b_idx: 66
+  via_a_xy:
+  - 117.341
+  - 64.2667
+  via_b_xy:
+  - 121.3657
+  - 63.9286
+- window_id: W4
+  x_min_mm: 121.841
+  y_min_mm: 65.9454
+  x_max_mm: 125.8258
+  y_max_mm: 66.294
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 68
+  via_b_idx: 98
+  via_a_xy:
+  - 121.841
+  - 66.294
+  via_b_xy:
+  - 125.8258
+  - 65.9454
+- window_id: W5
+  x_min_mm: 121.841
+  y_min_mm: 68.294
+  x_max_mm: 125.8258
+  y_max_mm: 68.6426
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 99
+  via_b_idx: 69
+  via_a_xy:
+  - 125.8258
+  - 68.6426
+  via_b_xy:
+  - 121.841
+  - 68.294
+- window_id: W6
+  x_min_mm: 121.841
+  y_min_mm: 70.294
+  x_max_mm: 125.741
+  y_max_mm: 71.269
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.02
+  via_a_idx: 70
+  via_b_idx: 96
+  via_a_xy:
+  - 121.841
+  - 70.294
+  via_b_xy:
+  - 125.741
+  - 71.269
+- window_id: W7
+  x_min_mm: 121.841
+  y_min_mm: 72.294
+  x_max_mm: 125.416
+  y_max_mm: 74.084
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9981
+  via_a_idx: 71
+  via_b_idx: 94
+  via_a_xy:
+  - 121.841
+  - 72.294
+  via_b_xy:
+  - 125.416
+  - 74.084
+- window_id: W8
+  x_min_mm: 121.841
+  y_min_mm: 74.294
+  x_max_mm: 125.041
+  y_max_mm: 76.694
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 72
+  via_b_idx: 92
+  via_a_xy:
+  - 121.841
+  - 74.294
+  via_b_xy:
+  - 125.041
+  - 76.694
+- window_id: W9
+  x_min_mm: 121.841
+  y_min_mm: 76.294
+  x_max_mm: 124.666
+  y_max_mm: 79.119
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 73
+  via_b_idx: 90
+  via_a_xy:
+  - 121.841
+  - 76.294
+  via_b_xy:
+  - 124.666
+  - 79.119
+- window_id: W10
+  x_min_mm: 121.841
+  y_min_mm: 78.294
+  x_max_mm: 123.641
+  y_max_mm: 81.894
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0249
+  via_a_idx: 74
+  via_b_idx: 88
+  via_a_xy:
+  - 121.841
+  - 78.294
+  via_b_xy:
+  - 123.641
+  - 81.894
+- window_id: W11
+  x_min_mm: 121.841
+  y_min_mm: 80.294
+  x_max_mm: 121.841
+  y_max_mm: 83.794
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.5
+  via_a_idx: 75
+  via_b_idx: 76
+  via_a_xy:
+  - 121.841
+  - 80.294
+  via_b_xy:
+  - 121.841
+  - 83.794
+- window_id: W12
+  x_min_mm: 121.841
+  y_min_mm: 84.219
+  x_max_mm: 122.866
+  y_max_mm: 87.794
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.719
+  via_a_idx: 86
+  via_b_idx: 77
+  via_a_xy:
+  - 122.866
+  - 84.219
+  via_b_xy:
+  - 121.841
+  - 87.794
+- window_id: W13
+  x_min_mm: 121.841
+  y_min_mm: 87.369
+  x_max_mm: 122.866
+  y_max_mm: 91.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0566
+  via_a_idx: 87
+  via_b_idx: 78
+  via_a_xy:
+  - 122.866
+  - 87.369
+  via_b_xy:
+  - 121.841
+  - 91.294
+- window_id: W14
+  x_min_mm: 121.841
+  y_min_mm: 89.694
+  x_max_mm: 123.641
+  y_max_mm: 93.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0249
+  via_a_idx: 89
+  via_b_idx: 79
+  via_a_xy:
+  - 123.641
+  - 89.694
+  via_b_xy:
+  - 121.841
+  - 93.294
+- window_id: W15
+  x_min_mm: 121.841
+  y_min_mm: 92.469
+  x_max_mm: 124.666
+  y_max_mm: 95.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 91
+  via_b_idx: 80
+  via_a_xy:
+  - 124.666
+  - 92.469
+  via_b_xy:
+  - 121.841
+  - 95.294
+- window_id: W16
+  x_min_mm: 121.841
+  y_min_mm: 94.894
+  x_max_mm: 125.041
+  y_max_mm: 97.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 93
+  via_b_idx: 81
+  via_a_xy:
+  - 125.041
+  - 94.894
+  via_b_xy:
+  - 121.841
+  - 97.294
+- window_id: W17
+  x_min_mm: 121.841
+  y_min_mm: 97.504
+  x_max_mm: 125.416
+  y_max_mm: 99.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9981
+  via_a_idx: 95
+  via_b_idx: 82
+  via_a_xy:
+  - 125.416
+  - 97.504
+  via_b_xy:
+  - 121.841
+  - 99.294
+- window_id: W18
+  x_min_mm: 121.841
+  y_min_mm: 100.319
+  x_max_mm: 125.741
+  y_max_mm: 101.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.02
+  via_a_idx: 97
+  via_b_idx: 83
+  via_a_xy:
+  - 125.741
+  - 100.319
+  via_b_xy:
+  - 121.841
+  - 101.294
+- window_id: W19
+  x_min_mm: 121.841
+  y_min_mm: 102.9454
+  x_max_mm: 125.8258
+  y_max_mm: 103.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 100
+  via_b_idx: 84
+  via_a_xy:
+  - 125.8258
+  - 102.9454
+  via_b_xy:
+  - 121.841
+  - 103.294
+- window_id: W20
+  x_min_mm: 121.841
+  y_min_mm: 105.294
+  x_max_mm: 125.8258
+  y_max_mm: 105.6426
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 101
+  via_b_idx: 85
+  via_a_xy:
+  - 125.8258
+  - 105.6426
+  via_b_xy:
+  - 121.841
+  - 105.294
+- window_id: W21
+  x_min_mm: 117.341
+  y_min_mm: 107.3213
+  x_max_mm: 121.3657
+  y_max_mm: 107.6594
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0389
+  via_a_idx: 67
+  via_b_idx: 63
+  via_a_xy:
+  - 121.3657
+  - 107.6594
+  via_b_xy:
+  - 117.341
+  - 107.3213
+- window_id: W22
+  x_min_mm: 115.341
+  y_min_mm: 107.3213
+  x_max_mm: 118.166
+  y_max_mm: 110.1463
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 65
+  via_b_idx: 59
+  via_a_xy:
+  - 118.166
+  - 110.1463
+  via_b_xy:
+  - 115.341
+  - 107.3213
+- window_id: W23
+  x_min_mm: 113.341
+  y_min_mm: 107.3213
+  x_max_mm: 115.466
+  y_max_mm: 110.7213
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0094
+  via_a_idx: 57
+  via_b_idx: 61
+  via_a_xy:
+  - 113.341
+  - 107.3213
+  via_b_xy:
+  - 115.466
+  - 110.7213
+- window_id: W24
+  x_min_mm: 111.341
+  y_min_mm: 107.3213
+  x_max_mm: 111.841
+  y_max_mm: 111.3213
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0311
+  via_a_idx: 55
+  via_b_idx: 53
+  via_a_xy:
+  - 111.841
+  - 111.3213
+  via_b_xy:
+  - 111.341
+  - 107.3213
+- window_id: W25
+  x_min_mm: 108.841
+  y_min_mm: 107.3463
+  x_max_mm: 109.341
+  y_max_mm: 111.3213
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0063
+  via_a_idx: 49
+  via_b_idx: 47
+  via_a_xy:
+  - 109.341
+  - 107.3463
+  via_b_xy:
+  - 108.841
+  - 111.3213
+- window_id: W26
+  x_min_mm: 105.8292
+  y_min_mm: 107.294
+  x_max_mm: 107.341
+  y_max_mm: 111.0041
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0063
+  via_a_idx: 43
+  via_b_idx: 45
+  via_a_xy:
+  - 105.8292
+  - 111.0041
+  via_b_xy:
+  - 107.341
+  - 107.294
+- window_id: W27
+  x_min_mm: 102.516
+  y_min_mm: 107.3213
+  x_max_mm: 105.341
+  y_max_mm: 110.1463
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 41
+  via_b_idx: 37
+  via_a_xy:
+  - 105.341
+  - 107.3213
+  via_b_xy:
+  - 102.516
+  - 110.1463
+- window_id: W28
+  x_min_mm: 99.3693
+  y_min_mm: 107.3213
+  x_max_mm: 103.341
+  y_max_mm: 107.657
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9859
+  via_a_idx: 39
+  via_b_idx: 35
+  via_a_xy:
+  - 103.341
+  - 107.3213
+  via_b_xy:
+  - 99.3693
+  - 107.657
+- window_id: W29
+  x_min_mm: 92.8562
+  y_min_mm: 105.3045
+  x_max_mm: 96.841
+  y_max_mm: 105.6531
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 33
+  via_b_idx: 5
+  via_a_xy:
+  - 96.841
+  - 105.3045
+  via_b_xy:
+  - 92.8562
+  - 105.6531
+- window_id: W30
+  x_min_mm: 92.8562
+  y_min_mm: 102.9454
+  x_max_mm: 96.841
+  y_max_mm: 103.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 4
+  via_b_idx: 32
+  via_a_xy:
+  - 92.8562
+  - 102.9454
+  via_b_xy:
+  - 96.841
+  - 103.294
+- window_id: W31
+  x_min_mm: 92.941
+  y_min_mm: 100.319
+  x_max_mm: 96.841
+  y_max_mm: 101.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.02
+  via_a_idx: 31
+  via_b_idx: 3
+  via_a_xy:
+  - 96.841
+  - 101.294
+  via_b_xy:
+  - 92.941
+  - 100.319
+- window_id: W32
+  x_min_mm: 93.261
+  y_min_mm: 97.504
+  x_max_mm: 96.841
+  y_max_mm: 99.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0026
+  via_a_idx: 7
+  via_b_idx: 30
+  via_a_xy:
+  - 93.261
+  - 97.504
+  via_b_xy:
+  - 96.841
+  - 99.294
+- window_id: W33
+  x_min_mm: 93.641
+  y_min_mm: 94.894
+  x_max_mm: 96.841
+  y_max_mm: 97.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 9
+  via_b_idx: 29
+  via_a_xy:
+  - 93.641
+  - 94.894
+  via_b_xy:
+  - 96.841
+  - 97.294
+- window_id: W34
+  x_min_mm: 94.0113
+  y_min_mm: 92.469
+  x_max_mm: 96.841
+  y_max_mm: 95.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 3.9985
+  via_a_idx: 28
+  via_b_idx: 11
+  via_a_xy:
+  - 96.841
+  - 95.294
+  via_b_xy:
+  - 94.0113
+  - 92.469
+- window_id: W35
+  x_min_mm: 95.041
+  y_min_mm: 89.694
+  x_max_mm: 96.841
+  y_max_mm: 93.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0249
+  via_a_idx: 13
+  via_b_idx: 27
+  via_a_xy:
+  - 95.041
+  - 89.694
+  via_b_xy:
+  - 96.841
+  - 93.294
+- window_id: W36
+  x_min_mm: 95.816
+  y_min_mm: 87.369
+  x_max_mm: 96.841
+  y_max_mm: 91.294
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0566
+  via_a_idx: 26
+  via_b_idx: 15
+  via_a_xy:
+  - 96.841
+  - 91.294
+  via_b_xy:
+  - 95.816
+  - 87.369
+- window_id: W37
+  x_min_mm: 96.841
+  y_min_mm: 83.794
+  x_max_mm: 96.841
+  y_max_mm: 87.794
+  sigma: -1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 25
+  via_b_idx: 24
+  via_a_xy:
+  - 96.841
+  - 87.794
+  via_b_xy:
+  - 96.841
+  - 83.794
+- window_id: W38
+  x_min_mm: 95.816
+  y_min_mm: 80.294
+  x_max_mm: 96.841
+  y_max_mm: 84.219
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0566
+  via_a_idx: 14
+  via_b_idx: 23
+  via_a_xy:
+  - 95.816
+  - 84.219
+  via_b_xy:
+  - 96.841
+  - 80.294
+- window_id: W39
+  x_min_mm: 95.041
+  y_min_mm: 78.294
+  x_max_mm: 96.841
+  y_max_mm: 81.894
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0249
+  via_a_idx: 12
+  via_b_idx: 22
+  via_a_xy:
+  - 95.041
+  - 81.894
+  via_b_xy:
+  - 96.841
+  - 78.294
+- window_id: W40
+  x_min_mm: 94.0113
+  y_min_mm: 76.294
+  x_max_mm: 96.841
+  y_max_mm: 79.119
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9985
+  via_a_idx: 10
+  via_b_idx: 21
+  via_a_xy:
+  - 94.0113
+  - 79.119
+  via_b_xy:
+  - 96.841
+  - 76.294
+- window_id: W41
+  x_min_mm: 93.641
+  y_min_mm: 74.294
+  x_max_mm: 96.841
+  y_max_mm: 76.694
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 8
+  via_b_idx: 20
+  via_a_xy:
+  - 93.641
+  - 76.694
+  via_b_xy:
+  - 96.841
+  - 74.294
+- window_id: W42
+  x_min_mm: 93.261
+  y_min_mm: 72.294
+  x_max_mm: 96.841
+  y_max_mm: 74.084
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0026
+  via_a_idx: 6
+  via_b_idx: 19
+  via_a_xy:
+  - 93.261
+  - 74.084
+  via_b_xy:
+  - 96.841
+  - 72.294
+- window_id: W43
+  x_min_mm: 92.941
+  y_min_mm: 70.294
+  x_max_mm: 96.841
+  y_max_mm: 71.269
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.02
+  via_a_idx: 2
+  via_b_idx: 18
+  via_a_xy:
+  - 92.941
+  - 71.269
+  via_b_xy:
+  - 96.841
+  - 70.294
+- window_id: W44
+  x_min_mm: 92.8562
+  y_min_mm: 68.294
+  x_max_mm: 96.841
+  y_max_mm: 68.6426
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 1
+  via_b_idx: 17
+  via_a_xy:
+  - 92.8562
+  - 68.6426
+  via_b_xy:
+  - 96.841
+  - 68.294
+- window_id: W45
+  x_min_mm: 92.8562
+  y_min_mm: 65.9349
+  x_max_mm: 96.841
+  y_max_mm: 66.2835
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0
+  via_a_idx: 0
+  via_b_idx: 16
+  via_a_xy:
+  - 92.8562
+  - 65.9349
+  via_b_xy:
+  - 96.841
+  - 66.2835
+- window_id: W46
+  x_min_mm: 99.3693
+  y_min_mm: 63.931
+  x_max_mm: 103.341
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9859
+  via_a_idx: 34
+  via_b_idx: 38
+  via_a_xy:
+  - 99.3693
+  - 63.931
+  via_b_xy:
+  - 103.341
+  - 64.2667
+- window_id: W47
+  x_min_mm: 102.516
+  y_min_mm: 61.4417
+  x_max_mm: 105.341
+  y_max_mm: 64.2667
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 3.9952
+  via_a_idx: 36
+  via_b_idx: 40
+  via_a_xy:
+  - 102.516
+  - 61.4417
+  via_b_xy:
+  - 105.341
+  - 64.2667
+- window_id: W48
+  x_min_mm: 105.8292
+  y_min_mm: 60.5838
+  x_max_mm: 107.341
+  y_max_mm: 64.294
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0063
+  via_a_idx: 42
+  via_b_idx: 44
+  via_a_xy:
+  - 105.8292
+  - 60.5838
+  via_b_xy:
+  - 107.341
+  - 64.294
+- window_id: W49
+  x_min_mm: 108.841
+  y_min_mm: 60.2667
+  x_max_mm: 109.341
+  y_max_mm: 64.2417
+  sigma: 1
+  h_via_mm: 1.12268
+  dist_mm: 4.0063
+  via_a_idx: 46
+  via_b_idx: 48
+  via_a_xy:
+  - 108.841
+  - 60.2667
+  via_b_xy:
+  - 109.341
+  - 64.2417

@@ -37,9 +37,12 @@ von PCB-basierten Rogowski-Spulen. Es besteht aus fünf klar getrennten Schichte
 ## Datenfluss
 
 ```
-ODB++-Datei
+Gerber-Verzeichnis (Altium-Export)
+    │  Top/Bottom Copper (.gbr)
+    │  PTH/NPTH Drill (.gbr)
+    │  Profile, Soldermask, Overlay ...
     │
-    ▼ OdbBoardLoader (infrastructure/odb)
+    ▼ GerberBoardLoader (infrastructure/gerber)
 Board-Domainobjekt
     │
     ▼ Manuelle Klassifikation im UI
@@ -67,7 +70,7 @@ TraceLayout (domain/trace)
 | `domain/ode`                 | Dynamisches Sensor-ODE-Modell                   |
 | `domain/stackup`             | Stackup, MaterialSet                            |
 | `domain/common`              | CalculationTrace, TraceStep, QualityStatus      |
-| `infrastructure/odb`         | ODB++-Parser → Board-Mapping                   |
+| `infrastructure/gerber`      | Gerber-Parser (gerbonara) → Board-Mapping    |
 | `infrastructure/persistence` | YAML/JSON Speichern/Laden                       |
 | `infrastructure/logging`     | Logging-Konfiguration                           |
 | `infrastructure/exporters`   | Bericht-Export JSON/Markdown                    |

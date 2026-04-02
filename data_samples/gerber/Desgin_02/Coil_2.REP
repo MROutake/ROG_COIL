@@ -1,0 +1,247 @@
+*************************************************************
+FileName = Coil_2.GBR
+AutoAperture = True
+*************************************************************
+Generating : Top Layer
+      File : Coil_2.GTL
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Mid-Layer 1
+      File : Coil_2.G1
+
+    Adding Layer      : Mid-Layer 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Mid-Layer 2
+      File : Coil_2.G2
+
+    Adding Layer      : Mid-Layer 2
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Bottom Layer
+      File : Coil_2.GBL
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+*************************************************************
+
+*************************************************************
+Generating : Top Overlay
+      File : Coil_2.GTO
+
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Top Solder
+      File : Coil_2.GTS
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : Coil_2.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : Coil_2.GBO
+
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 1
+      File : Coil_2.GM1
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+    D10
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 2
+      File : Coil_2.GM2
+
+    Adding Layer      : Mechanical 2
+
+
+Used DCodes :
+    D13
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 3
+      File : Coil_2.GM3
+
+    Adding Layer      : Mechanical 3
+
+
+Used DCodes :
+    D11
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 15
+      File : Coil_2.GM15
+
+    Adding Layer      : Mechanical 15
+
+
+Used DCodes :
+    D14
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 13
+      File : Coil_2.GM13
+
+    Adding Layer      : Mechanical 13
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 14
+      File : Coil_2.GM14
+
+    Adding Layer      : Mechanical 14
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 16
+      File : Coil_2.GM16
+
+    Adding Layer      : Mechanical 16
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 32
+      File : Coil_2.GM32
+
+    Adding Layer      : Mechanical 32
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Profile
+      File : Coil_2.GM
+
+
+Used DCodes :
+    D15
+*************************************************************
+
+*************************************************************
+Generating : Non-plated through-hole drill file
+      File : Coil_2.GBR1
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Plated through-hole drill file
+      File : Coil_2.GBR2
+
+
+Used DCodes :
+    D16
+*************************************************************
+
+*************************************************************
+Generating : Drill Drawing
+      File : Coil_2.GD1
+
+    Adding Drill Pair : Top Layer-Bottom Layer
+
+    Adding Layer      : Drill Drawing
+
+
+Used DCodes :
+    D10
+    D18
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Drill Guide
+      File : Coil_2.GG1
+
+    Adding Drill Pair : Top Layer-Bottom Layer
+
+    Adding Layer      : Drill Guide
+
+
+Used DCodes :
+    D18
+*************************************************************
+

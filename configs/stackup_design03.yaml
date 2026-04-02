@@ -1,0 +1,59 @@
+# stackup_design03.yaml
+# ---------------------------------------------------------------------------
+# Stackup-Definition für Desgin_03 (4-Lagen-PCB)
+# Quelle: Altium Board Stack Report, Stand 2026-04-01
+#
+# Relevante Kenngrößen für Berechnungen:
+#   H  (Abstand Top-Layer zur nächsten Massefläche) = 0.32004 mm  (Dielectric_1)
+#   T  (Kupferdicke 1 oz)                           = 0.03556 mm
+#   εr (FR-4 Dielektrikum)                          = 4.8
+#   Gesamtdicke                                     = 1.12268 mm
+# ---------------------------------------------------------------------------
+
+stackup:
+  name: "Design03_4Layer"
+  total_thickness_mm: 1.12268
+
+  copper_layers:
+    - name: "top_layer"
+      thickness_um: 35.56       # 1 oz Kupfer
+      index: 0
+    - name: "mid-layer_1"
+      thickness_um: 35.56
+      index: 1
+    - name: "mid-layer_2"
+      thickness_um: 35.56
+      index: 2
+    - name: "bottom_layer"
+      thickness_um: 35.56
+      index: 3
+
+  dielectrics:
+    - name: "Dielectric_1"
+      between_layers: ["top_layer", "mid-layer_1"]
+      material: "FR-4"
+      thickness_mm: 0.32004
+      epsilon_r: 4.8
+      loss_tangent: 0.02        # typisch für FR-4 bei 1 MHz
+
+    - name: "Dielectric_2"
+      between_layers: ["mid-layer_1", "mid-layer_2"]
+      material: "FR-4"
+      thickness_mm: 0.32004
+      epsilon_r: 4.8
+      loss_tangent: 0.02
+
+    - name: "Dielectric_3"
+      between_layers: ["mid-layer_2", "bottom_layer"]
+      material: "FR-4"
+      thickness_mm: 0.32004
+      epsilon_r: 4.8
+      loss_tangent: 0.02
+
+  soldermask:
+    - side: "top"
+      thickness_mm: 0.01016
+      epsilon_r: 3.5
+    - side: "bottom"
+      thickness_mm: 0.01016
+      epsilon_r: 3.5

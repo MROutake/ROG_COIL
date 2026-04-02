@@ -117,10 +117,27 @@ class CalculateCoilParameters:
         self._service = coil_service
         self._repo = repository
 
-    def execute(self, request: CoilParameterRequest) -> CoilParameters:
-        raise NotImplementedError(
-            "CalculateCoilParameters.execute muss implementiert werden, "
-            "sobald CoilParameterServiceImpl verfügbar ist."
+    def execute(
+        self,
+        request: CoilParameterRequest,
+        layout: TraceLayout,
+        board: Board,
+    ) -> CoilParameters:
+        """
+        Berechnet Spulen-Parameter aus klassifiziertem TraceLayout und Board.
+
+        Args:
+            request: Anfrage-DTO (Temperatur, Config-Pfad).
+            layout:  Klassifiziertes TraceLayout (aus FishboneClassifier oder YAML).
+            board:   Geladenes Board-Domainobjekt.
+
+        Returns:
+            CoilParameters mit CalculationTrace.
+        """
+        return self._service.calculate(
+            layout=layout,
+            board=board,
+            temperature_celsius=request.temperature_celsius,
         )
 
 
@@ -175,7 +192,7 @@ class RunFullCharacterization:
             board_name=board.name,
             temperature_celsius=temperature_celsius,
         )
-        coil_params = self._calc_coil.execute(coil_request)
+        coil_params = self._calc_coil.execute(coil_request, layout, board)
         mutual_result = self._calc_mutual.execute(layout, board)
 
         return coil_params, mutual_result

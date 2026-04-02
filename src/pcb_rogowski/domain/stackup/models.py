@@ -25,8 +25,9 @@ class DielectricSpec:
 
     name: str
     thickness_mm: float
-    epsilon_r: float      # Relative Permittivität
-    loss_tangent: float   # Verlustfaktor tan(δ)
+    epsilon_r: float                             # Relative Permittivität
+    loss_tangent: float                          # Verlustfaktor tan(δ)
+    between_layers: tuple[str, str] | None = None  # (obere Lage, untere Lage)
 
 
 @dataclass
@@ -40,10 +41,17 @@ class Stackup:
     name: str
     copper_layers: list[CopperLayerSpec] = field(default_factory=list)
     dielectrics: list[DielectricSpec] = field(default_factory=list)
+    _total_thickness_override: float | None = field(default=None, repr=False)
 
     @property
     def total_thickness_mm(self) -> float:
-        """Gesamtdicke der Leiterplatte in mm."""
+        """Gesamtdicke der Leiterplatte in mm.
+
+        Nutzt den expliziten Wert aus der YAML (enthält Kupfer + Lötstopplack),
+        falls vorhanden; sonst Summe der Dielektrikumslagen.
+        """
+        if self._total_thickness_override is not None:
+            return self._total_thickness_override
         return sum(d.thickness_mm for d in self.dielectrics)
 
     @property

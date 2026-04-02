@@ -51,7 +51,7 @@ trace = CalculationTrace(
     ),
     warnings=(),
     quality_status=QualityStatus.OK,
-    source_files=("projekt.odb",),
+    source_files=("COIL_Copper_Signal_Top.gbr", "COIL_PTH_Drill.gbr"),
     config_versions={"geometry": "1.0", "materials": "1.0"},
     timestamp="2026-04-01T10:00:00",
     software_version="0.1.0",

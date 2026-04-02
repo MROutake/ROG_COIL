@@ -38,3 +38,35 @@ calculation:
 
   # Maximale akzeptable Serienwiderstand-Warnschwelle [Ω]
   warn_resistance_above_ohm: 100.0
+
+  # Berechnungsmodus für L_track:
+  #   "simplified"  → L = µ₀l/(2π)·ln(5.98H/(0.8W+T))   [Standard, robust]
+  #   "microstrip"  → Vollständige Mikrostreifen-Formel mit W_eff, Z, P_delay
+  l_track_mode: "simplified"
+
+classifier:
+  # ---------------------------------------------------------------------------
+  # Parameter für die automatische Fishbone-Klassifikation.
+  # Nach der automatischen Erkennung kann die erzeugte YAML-Datei
+  # manuell angepasst werden (scripts/inspect_board.py).
+  # ---------------------------------------------------------------------------
+
+  # Winkeltoleranz für "parallele Segmente" in Grad.
+  # Zwei Segmente gelten als parallel, wenn ihr Winkelunterschied < angle_tolerance_deg.
+  angle_tolerance_deg: 10.0
+
+  # Mindestanzahl paralleler Segmente, damit das Fishbone-Muster erkannt wird.
+  min_parallel_segments: 3
+
+  # Längenschwelle [mm]: Segmente KÜRZER als dieser Wert auf dem Winding-Layer
+  # werden als "connection" klassifiziert; längere als "winding".
+  # Richtwert: etwas über dem Median der Leiterbahnlängen des Winding-Layers.
+  # Design-03 (top_layer): Median ≈ 0.7 mm, Max ≈ 4.0 mm → 1.0 mm als Startwert.
+  # Mit `inspect_board.py --threshold <wert>` überschreibbar.
+  short_segment_threshold_mm: 1.0
+
+  # Lagenname des primären Windungsleiters (Gerber-Lagenname aus dem Loader).
+  winding_layer_name: "top_layer"
+
+  # Lagenname des Rückleiters.
+  return_layer_name: "bottom_layer"

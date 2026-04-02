@@ -4,14 +4,14 @@
 
 ### Board
 
-Vollständiges PCB-Modell nach ODB++-Import.
+Vollständiges PCB-Modell nach Gerber-Import.
 
-| Attribut      | Typ              | Beschreibung                          |
-|---------------|------------------|---------------------------------------|
-| `name`        | `str`            | Projektname aus ODB++                 |
-| `layers`      | `list[Layer]`    | Alle Lagen                            |
-| `outline_mm`  | `tuple` optional | Board-Außenmaße                       |
-| `source_file` | `str`            | Ursprungsdatei                        |
+| Attribut      | Typ              | Beschreibung                              |
+|---------------|------------------|-------------------------------------------|
+| `name`        | `str`            | Projektname (aus Gerber-Verzeichnisname)  |
+| `layers`      | `list[Layer]`    | Alle Lagen                                |
+| `outline_mm`  | `tuple` optional | Board-Außenmaße (aus Profile.gbr)         |
+| `source_file` | `str`            | Pfad zum Gerber-Verzeichnis               |
 
 ### Layer
 
