@@ -488,10 +488,4 @@ wird aus der geometrischen Mitte der Windungssegmente bestimmt.
 
 ---
 
-## 10  Referenzen
 
-1. **Ruehli, A.E.** (1972): *"Inductance Calculations in a Complex Integrated
-   Circuit Environment"*, IBM Journal of Research & Development, Vol. 16, No. 5.
-2. **Lorenz, L.** (1879): *Wied. Ann.* Bd. VII — Selbstinduktivität gerader Leiter.
-3. **Bode100** — Impedanzanalysator, OMICRON Lab, Bode100 User Manual.
-4. **FR-4 Material Data** — IPC-4101, εr = 4,5–4,8 bei 1 MHz.

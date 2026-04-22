@@ -5,19 +5,23 @@ M_prim zwischen dem Dual-Busbar-Primärleiter und der Rogowski-Spule.
 Modell
 ------
 Zwei linienhafte Leiter (I₁ = +I, I₂ = −I) erzeugen ein Magnetfeld.
-Die Kopplung zur Rogowski-Spule wird fensterweise berechnet:
+Die Kopplung zur Rogowski-Spule wird fensterweise berechnet.
 
-    M_m = (µ₀·h_m) / (2π) · σ_m · [ln((a₁_m + b_m) / a₁_m)
-                                    − ln((a₂_m + b_m) / a₂_m)]
+Methoden
+--------
+1) **analytical** (vereinfacht):
+    M_m = (µ₀·h_m)/(2π) · σ_m · [ln((a₁+b)/a₁) − ln((a₂+b)/a₂)]
+    Setzt konzentrische Feldlinien um jeden Leiter voraus.
 
-    M_ges = Σ M_m
+2) **field_integral** (exakt für Linienleiter):
+    M_m = σ_m · h_m · (µ₀)/(2π) · ∫(via_a→via_b) F⊥(l) dl
 
-mit:
-    h_m      Effektive Fensterhöhe (= axiale Ausdehnung der Windung)
-    b_m      Fensterbreite (radiale Ausdehnung)
-    a₁_m     Minimaler Abstand des Fensters zu Leiter 1
-    a₂_m     Minimaler Abstand des Fensters zu Leiter 2
-    σ_m      Vorzeichen aus Wicklungssinn (+1 / −1)
+    Integriert die Normalkomponente des tatsächlichen, resultierenden
+    B-Feldes beider Leiter (Superposition) entlang des Pfades von
+    via_a nach via_b.  Keine Annahme über die Feldgeometrie nötig.
+
+3) **numerical** (Rasterintegration):
+    Numerische 2D-Integration über die Fensterfläche.
 
 Leiter-Konfiguration (Dual-Busbar)
 -----------------------------------
@@ -38,6 +42,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from pcb_rogowski.domain.common.trace import CalculationTrace, QualityStatus, TraceStep
+from pcb_rogowski.domain.formulas import FORMULAS
 from pcb_rogowski.domain.mutual.models import (
     MutualInductanceResult,
     WindowMutualContribution,
@@ -84,40 +89,89 @@ class MutualInductanceCalculator:
     Berechnet M_prim für eine gegebene Fensterliste und Leiterkonfiguration.
 
     Unterstützt:
-        - Analytische Formel für rechteckige Fenster (ln-Auswertung)
-        - Numerische Integration für beliebige Fensterformen (Raster)
+        - ``"field_integral"``:  Linienintegral des realen B-Feldes
+          (Superposition beider Leiter) entlang des Via-Pfades.
+          Genaueste Methode – keine Annahme über Feldgeometrie.
+        - ``"analytical"``: Vereinfachte ln-Formel für rechteckige Fenster.
+          Setzt konzentrische Feldlinien voraus.
+        - ``"numerical"``: 2D-Rasterintegration über die Fensterfläche.
 
     Args:
         conductor:  Position der zwei Primärleiter.
-        method:     ``"analytical"`` (Standard) oder ``"numerical"``.
+        method:     ``"field_integral"`` (Standard), ``"analytical"``
+                    oder ``"numerical"``.
         grid_n:     Rasterpunkte pro Achse für numerische Integration.
+        n_integration: Integrationspunkte entlang des Via-Pfades
+                       (nur für ``"field_integral"``).
     """
 
     def __init__(
         self,
         conductor: ConductorConfig,
-        method: str = "analytical",
+        method: str = "field_integral",
         grid_n: int = 50,
+        n_integration: int = 500,
     ) -> None:
         self._cond = conductor
         self._method = method
         self._grid_n = grid_n
+        self._n_integration = n_integration
 
     def compute(
         self,
         windows: list[ViaWindow],
         h_eff_mm: float | None = None,
     ) -> MutualInductanceResult:
-        """
-        Berechnet M_prim aus den Via-Fenstern.
+        """Gegenseitige Induktivität M_prim zwischen Dual-Busbar und Spule [H].
 
-        Args:
-            windows:   Liste der extrahierten Via-Fenster.
-            h_eff_mm:  Effektive Fensterhöhe [mm] (= Via-Höhe / Stackup-Dicke).
-                       Falls None, wird ``window.height_mm`` verwendet.
+        Registry-Keys
+        -------------
+        ``M_conductor_config`` (Konfiguration), ``M_total`` (Aggregation)
+        -- siehe :mod:`pcb_rogowski.domain.formulas`.
 
-        Returns:
-            MutualInductanceResult mit Gesamt-M und Einzelbeiträgen.
+        Physik
+        ------
+        Biot-Savart-Feld der beiden Primärleiter (+I, -I) wird pro Via-
+        Fenster m integriert::
+
+            M_prim = Σ_m |M_m|
+            M_m    = σ_m · h_m · (µ₀ / 2π) · ∫ F⊥(l) dl
+
+        Vorzeichen ``σ_m ∈ {+1,-1}`` erfasst die Richtung des Fensters
+        (abhängig von der Via-Traversal-Reihenfolge in der Spulen-
+        Geometrie).
+
+        Methoden (``self._method``):
+          * ``field_integral`` -- Linienintegral des exakten B-Feldes
+            entlang Via-Pfad (Standard, genauest bei Linienleitern).
+          * ``analytical``     -- Konzentrische-Kreise-Näherung für
+            achsparallele Rechteckfenster (Legacy, schnell).
+          * ``numerical``      -- 2D-Rasterintegration über Fenster-
+            fläche (Vergleichs-/Debugging-Methode).
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * Linienleiter senkrecht zur Platine (``axis='z'``). Für
+          horizontale Leiter analytisches Modell nicht gültig --
+          auf ``field_integral`` oder ``numerical`` wechseln.
+        * Beide Leiter führen betraglich denselben Strom (+I / -I).
+        * Quasi-statisch (f klein gegen Eigenresonanz der Spule).
+        * Wird ``h_eff_mm`` übergeben, überschreibt er die Via-Höhe
+          aus dem Fenster (nützlich, um Stackup-Lagendicke explizit
+          zu steuern).
+
+        Sanity-Zahl
+        -----------
+        Design 03 mit Dual-Busbar (Δx = 50 mm, Leiter 1 innen),
+        40 Windungen, Board 1.6 mm:
+        Typischer Wert M_prim ≈ 12 nH. Grobprüfung: halbiere die
+        Busbar-Distanz → M_prim sollte ~verdoppelt werden.
+
+        Anpassung
+        ---------
+        Model-Wechsel (z. B. Finite-Leiter-Länge) erfordert neues
+        Vorzeichen-/Geometrie-Handling in den ``_compute_window_*``-
+        Methoden. Workflow: ``docs/FORMELN-ANPASSEN.md``.
         """
         if not windows:
             return self._empty_result("Keine Via-Fenster für M-Berechnung vorhanden.")
@@ -134,7 +188,7 @@ class MutualInductanceCalculator:
 
         steps.append(TraceStep(
             name="Primärleiter-Konfiguration",
-            formula="Leiter 1: (+I) bei (x₁, y₁),  Leiter 2: (−I) bei (x₂, y₂)",
+            formula=FORMULAS["M_conductor_config"].latex,
             inputs={
                 "x1_mm": self._cond.x1_mm, "y1_mm": self._cond.y1_mm,
                 "x2_mm": self._cond.x2_mm, "y2_mm": self._cond.y2_mm,
@@ -152,13 +206,18 @@ class MutualInductanceCalculator:
                 m_m_H = self._compute_window_numerical(
                     win, x1, y1, x2, y2, h_eff_mm,
                 )
+            elif self._method == "field_integral":
+                m_m_H = self._compute_window_field_integral(
+                    win, x1, y1, x2, y2, h_eff_mm,
+                    warnings,
+                )
             else:
                 m_m_H = self._compute_window_analytical(
                     win, x1, y1, x2, y2, h_eff_mm,
                     warnings,
                 )
 
-            m_total_H += m_m_H
+            m_total_H += abs(m_m_H)
             contributions.append(WindowMutualContribution(
                 window_id=win.window_id,
                 m_nH=m_m_H * 1e9,
@@ -181,7 +240,7 @@ class MutualInductanceCalculator:
 
         steps.append(TraceStep(
             name="M_ges – Gesamtgegeninduktivität",
-            formula="M_ges = Σ M_m",
+            formula=FORMULAS["M_total"].latex,
             inputs={
                 "N_windows": float(len(windows)),
                 "M_pos_nH": sum(c.m_nH for c in contributions if c.m_nH > 0),
@@ -207,6 +266,146 @@ class MutualInductanceCalculator:
             window_contributions=tuple(contributions_with_pct),
             trace=trace,
         )
+
+    # ------------------------------------------------------------------
+    # Linienintegral des realen B-Feldes (exakt für Linienleiter)
+    # ------------------------------------------------------------------
+
+    def _compute_window_field_integral(
+        self,
+        win: ViaWindow,
+        x1: float, y1: float,
+        x2: float, y2: float,
+        h_eff_mm: float | None,
+        warnings: list[str],
+    ) -> float:
+        """Beitrag eines Fensters m über das exakte B-Feld-Linienintegral [H].
+
+        Registry-Key
+        ------------
+        ``M_total``  -- diese Methode liefert ``M_m``, die Summe
+        ``M_prim = Σ|M_m|`` wird in :meth:`compute` aggregiert.
+
+        Physik
+        ------
+        Superposition beider Linienleiter ergibt das 2D-Feld
+        (µ₀·I/(2π)) · F, mit der normierten Feldstärke::
+
+            F = (-Δy₁/ρ₁² + Δy₂/ρ₂²,  Δx₁/ρ₁² - Δx₂/ρ₂²)
+
+        Das Fenster wird durch den geraden Pfad von Via A nach Via B
+        parametrisiert, Länge ``b_m``. Fensternormale
+        ``n̂ = ẑ × t̂ = (-t_y, t_x)``. Der Fluss durch das Fenster::
+
+            Φ_m = h_m · (µ₀ I / 2π) · ∫₀^{b_m} F⊥(l) dl
+            M_m = σ_m · Φ_m / I = σ_m · h_m · (µ₀/2π) · ∫ F⊥ dl
+
+        Numerisch wird das Integral per Trapezregel mit
+        ``self._n_integration`` Stützstellen berechnet.
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * Primärleiter als ideale Linienleiter (ρ → 0 ist regularisiert
+          durch ``max(ρ², 1e-20)``).
+        * Gerader Via-Pfad zwischen ``via_a_xy`` und ``via_b_xy``
+          (keine gekrümmten Fenster).
+        * Fensternormale liegt in der x-y-Ebene; Leiterachse z.
+        * Fallback auf ``_compute_window_analytical``, wenn Via-
+          Koordinaten fehlen (wird als Warnung protokolliert).
+
+        Sanity-Zahl
+        -----------
+        Leiter 1 bei (0, 0), Leiter 2 bei (50 mm, 0), Fenster zentriert
+        bei (25 mm, 10 mm), b_m = 4 mm, h_m = 1.6 mm:
+        F⊥ ≈ 2·y/(x²+y²) ≈ 28 m⁻¹  →
+        M_m ≈ 1·1.6e-3·(µ₀/2π)·28·4e-3 ≈ 36 pH.
+
+        Bei 40 Windungen und symmetrischem Aufbau erwartet man
+        |M_prim| in der Größenordnung einiger nH.
+
+        Anpassung
+        ---------
+        Änderung des Integranden (z. B. endliche Leiterlänge via
+        elliptische Integrale) hier lokal umsetzen; Registry-Latex
+        ``M_total`` synchronisieren. Workflow:
+        ``docs/FORMELN-ANPASSEN.md``.
+        """
+        # Fallback: ohne Via-Koordinaten → analytische Formel
+        if win.via_a_xy is None or win.via_b_xy is None:
+            warnings.append(
+                f"Fenster {win.window_id}: Keine Via-Koordinaten – "
+                f"Fallback auf analytische Formel."
+            )
+            return self._compute_window_analytical(
+                win, x1, y1, x2, y2, h_eff_mm, warnings,
+            )
+
+        # Fensterhöhe [m]
+        if h_eff_mm is not None:
+            h_m = h_eff_mm * 1e-3
+        elif win.h_via_mm is not None:
+            h_m = win.h_via_mm * 1e-3
+        else:
+            h_m = win.height_mm * 1e-3
+
+        # Via-Positionen [m]
+        xa, ya = win.via_a_xy[0] * 1e-3, win.via_a_xy[1] * 1e-3
+        xb, yb = win.via_b_xy[0] * 1e-3, win.via_b_xy[1] * 1e-3
+
+        # Richtungsvektor und Pfadlänge
+        dx = xb - xa
+        dy = yb - ya
+        b_m = math.hypot(dx, dy)
+
+        if b_m <= 0:
+            return 0.0
+
+        # Einheitsvektoren
+        tx = dx / b_m   # tangential (entlang Pfad)
+        ty = dy / b_m
+        nx = -ty         # Fensternormale: n̂ = ẑ × t̂ = (−ty, tx)
+        ny = tx
+
+        # Numerische Integration (Trapezregel, n_integration Segmente)
+        n = self._n_integration
+        dl = b_m / n
+        integral = 0.0
+
+        for i in range(n + 1):
+            l = i * dl
+            xp = xa + l * tx
+            yp = ya + l * ty
+
+            # Abstände zum Leiter 1 (+I)
+            rx1 = xp - x1
+            ry1 = yp - y1
+            rho1_sq = rx1 * rx1 + ry1 * ry1
+            rho1_sq = max(rho1_sq, 1e-20)  # Regularisierung
+
+            # Abstände zum Leiter 2 (−I)
+            rx2 = xp - x2
+            ry2 = yp - y2
+            rho2_sq = rx2 * rx2 + ry2 * ry2
+            rho2_sq = max(rho2_sq, 1e-20)
+
+            # Normierte Feldstärke F = B·2π/(µ₀I) beider Leiter:
+            #   Leiter 1 (+I): F₁ = (−ry1, rx1) / ρ₁²
+            #   Leiter 2 (−I): F₂ = (+ry2, −rx2) / ρ₂²  (umgekehrtes Vorzeichen)
+            fx = -ry1 / rho1_sq + ry2 / rho2_sq
+            fy = rx1 / rho1_sq - rx2 / rho2_sq
+
+            # Normalkomponente
+            f_perp = fx * nx + fy * ny
+
+            # Trapezgewicht
+            w = 0.5 if (i == 0 or i == n) else 1.0
+            integral += w * f_perp * dl
+
+        # M_m = σ · h_m · (µ₀/(2π)) · ∫ F⊥ dl
+        sigma = win.sigma
+        m_m_H = (_MU_0 / (2.0 * math.pi)) * h_m * sigma * integral
+
+        return m_m_H
 
     # ------------------------------------------------------------------
     # Analytische Berechnung (rechteckige Fenster)
@@ -245,13 +444,14 @@ class MutualInductanceCalculator:
         y_min = win.y_min_mm * 1e-3
         y_max = win.y_max_mm * 1e-3
 
-        # Fensterbreite b_m: die Ausdehnung in der Richtung, in der die
-        # Leiter-Abstände variieren.  Bei Leitern in z-Richtung (senkrecht
-        # zur PCB) ist das die radiale Ausdehnung des Fensters.
-        # Wir nehmen die Breite in x-Richtung als Standard.
-        b_m = x_max - x_min
-        if b_m <= 0:
-            b_m = y_max - y_min  # Fallback: y-Breite
+        # Fensterbreite b_m: Euklidische Distanz zwischen den beiden
+        # Vias des Fensters (bevorzugt), oder BBox-Ausdehnung als Fallback.
+        if win.dist_mm is not None and win.dist_mm > 0:
+            b_m = win.dist_mm * 1e-3
+        else:
+            b_m = x_max - x_min
+            if b_m <= 0:
+                b_m = y_max - y_min  # Fallback: y-Breite
 
         if b_m <= 0:
             warnings.append(

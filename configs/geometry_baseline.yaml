@@ -34,11 +34,16 @@ via:
 
 busbar:
   # Geometrie des Dual-Busbar-Primärleiters für M-Berechnung
-  # Busbar-Breite [mm]
-  width_mm: 10.0
+  # Abstand zwischen den zwei Leitern (Zentrum-zu-Zentrum) [mm]
+  # Referenz: M_Berechnung_Details.txt → 2 × 11.0 mm = 22.0 mm
+  width_mm: 22.0
 
   # Busbar-Dicke [mm]
   thickness_mm: 3.0
 
   # Abstand Busbar-Mitte zu Spulenmitte [mm]
   center_offset_mm: 0.0
+
+  # Trennachse der zwei Leiter: "y" (vertikal) oder "x" (horizontal)
+  # Die Leiter werden symmetrisch um das Spulenzentrum auf dieser Achse platziert.
+  separation_axis: "y"

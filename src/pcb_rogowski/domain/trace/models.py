@@ -57,6 +57,10 @@ class ViaWindow:
         x_min_mm, y_min_mm, x_max_mm, y_max_mm: Eckpunkte in mm.
         sigma: Vorzeichen für Summation (+1 / -1).
         layer_pair: (obere Lage, untere Lage) der zugehörigen Vias.
+        via_a_xy: Position des ersten Vias [x, y] in mm (optional).
+        via_b_xy: Position des zweiten Vias [x, y] in mm (optional).
+        dist_mm: Euklidische Distanz zwischen den beiden Vias [mm].
+        h_via_mm: Via-Höhe (PCB-Gesamtdicke) [mm] (optional).
     """
 
     window_id: str
@@ -66,6 +70,10 @@ class ViaWindow:
     y_max_mm: float
     sigma: int
     layer_pair: tuple[str, str] | None = None
+    via_a_xy: tuple[float, float] | None = None
+    via_b_xy: tuple[float, float] | None = None
+    dist_mm: float | None = None
+    h_via_mm: float | None = None
 
     @property
     def width_mm(self) -> float:

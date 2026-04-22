@@ -30,6 +30,7 @@ from pcb_rogowski.domain.board.models import Board
 from pcb_rogowski.domain.coil.geometry import GeometryExtractor, GeometryParameters
 from pcb_rogowski.domain.coil.models import CoilParameters
 from pcb_rogowski.domain.common.trace import CalculationTrace, QualityStatus, TraceStep
+from pcb_rogowski.domain.formulas import FORMULAS
 from pcb_rogowski.domain.stackup.models import MaterialSet
 from pcb_rogowski.domain.trace.models import TraceLayout
 
@@ -104,7 +105,7 @@ class CoilParameterServiceImpl:
         # Geometrie-Schritt dokumentieren
         steps.append(TraceStep(
             name="Geometrie-Parameter",
-            formula="extrahiert aus TraceLayout + Board + Stackup",
+            formula=FORMULAS["geometry_extract"].latex,
             inputs={
                 "W_mm": geometry.W_mm,
                 "H_mm": geometry.H_mm,
@@ -136,7 +137,7 @@ class CoilParameterServiceImpl:
         l_total_H = l_track_H + l_vias_H + l_trace_H
         steps.append(TraceStep(
             name="L_C – Gesamtinduktivität",
-            formula="L_C = L_track + L_vias + L_trace",
+            formula=FORMULAS["L_total"].latex,
             inputs={
                 "L_track_uH": l_track_H * 1e6,
                 "L_vias_uH": l_vias_H * 1e6,
@@ -161,7 +162,7 @@ class CoilParameterServiceImpl:
 
         steps.append(TraceStep(
             name="f_res – Eigenresonanzfrequenz",
-            formula="f_res = 1 / (2π·√(L_C·C_C))",
+            formula=FORMULAS["f_res"].latex,
             inputs={"L_C_uH": l_total_H * 1e6, "C_C_pF": c_series_F * 1e12},
             output=f_res_hz * 1e-6,
             unit="MHz",
@@ -204,16 +205,53 @@ class CoilParameterServiceImpl:
         steps: list[TraceStep],
         warnings: list[str],
     ) -> float:
-        """
-        Selbstinduktivität der Windungssegmente in Henry.
+        """Selbstinduktivität der Windungssegmente [H].
 
-        Jedes Segment wird einzeln berechnet (Ruehli/Lorenz 1972):
+        Registry-Key
+        ------------
+        ``L_track_self_segment``  (siehe :mod:`pcb_rogowski.domain.formulas`).
+
+        Physik
+        ------
+        Jedes Kupfersegment wird einzeln als gerader Rechteckleiter im
+        Freiraum modelliert (Ruehli/Lorenz, IBM 1972)::
+
             L_self,i = µ₀·l_i / (2π) · [ln(2·l_i/(w+t)) + 0.5 + 0.2235·(w+t)/l_i]
 
-        Die Gesamtlänge wird gleichmäßig auf n_seg = 2·N_turns Segmente
-        aufgeteilt (Top- + Bottom-Lage im Fishbone-Muster).
+        Die Gesamtlänge der WINDING-Segmente wird gleichmäßig auf
+        ``n_seg = 2·N_turns`` Segmente aufgeteilt (je Windung ein Top-
+        und ein Bottom-Segment, Fishbone-Topologie)::
 
-        L_track = Σ L_self,i = n_seg · L_self(l_track / n_seg)
+            L_track = Σ L_self,i = n_seg · L_self(l_track / n_seg)
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * Keine durchgehende GND-Plane (sonst wäre ein Mikrostreifen-
+          Modell nötig -- L wäre um Faktor 2-5 kleiner).
+        * Gegeninduktivitäten zwischen benachbarten Segmenten werden
+          vernachlässigt (OK bei Fishbone mit p ≳ 2·W).
+        * Freiraum-Näherung: gilt für ``l_i ≫ (w+t)``  (typ. l_i/w > 5).
+
+        Sanity-Zahl
+        -----------
+        Design 03 (N=40, l_track ≈ 320 mm, W=0.25 mm, T=35 µm):
+        L_track ≈ 0.38 µH. Abweichungen > 10 % deuten auf falsche
+        Geometrie-Extraktion (Fishbone-Segmente nicht erkannt).
+
+        Anpassung
+        ---------
+        Wenn diese Formel geändert wird:
+
+        1. Neuen LaTeX-String in ``FORMULAS['L_track_self_segment'].latex``
+           eintragen (GUI/Reports).
+        2. Python-Code unten (`l_self_i = ...`) synchron anpassen.
+        3. Herleitung in ``docs/berechnungen.md §L_track`` ergänzen.
+        4. Konsistenz-Checks: ``pytest tests/unit/test_formula_registry.py``
+           und ``pytest tests/golden_cases`` laufen lassen.
+
+        Siehe auch
+        ----------
+        ``docs/FORMELN-ANPASSEN.md``  -- vollständiger Konsistenz-Workflow.
         """
         l_total = g.l_track_mm * 1e-3   # Gesamtlänge aller Winding-Segmente [m]
         W = g.W_mm * 1e-3
@@ -243,7 +281,7 @@ class CoilParameterServiceImpl:
 
         steps.append(TraceStep(
             name="L_track – Selbstinduktivität (Ruehli/Lorenz, pro Segment)",
-            formula="L_self,i = µ₀·l_i/(2π)·[ln(2·l_i/(w+t)) + 0.5 + 0.2235·(w+t)/l_i]",
+            formula=FORMULAS["L_track_self_segment"].latex,
             inputs={
                 "l_track_mm": g.l_track_mm,
                 "n_seg": float(n_seg),
@@ -273,11 +311,39 @@ class CoilParameterServiceImpl:
         steps: list[TraceStep],
         warnings: list[str],
     ) -> float:
-        """
-        Induktivität der Vias in Henry.
+        """Induktivität aller Vias im Windungspfad [H].
 
-            L_via = µ₀·h / (2π) · (1 + ln(4h/d))
-            L_vias = n_vias · L_via
+        Registry-Key
+        ------------
+        ``L_vias``  (siehe :mod:`pcb_rogowski.domain.formulas`).
+
+        Physik
+        ------
+        Zylindrischer Einzeldraht (Goldfarb & Pucel 1991)::
+
+            L_via  = µ₀·h / (2π) · (1 + ln(4·h/d))
+            L_vias = n_vias · L_via    (Serienschaltung entlang Pfad)
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * ``4h/d > 1`` erforderlich (sonst ln < 0 → unphysikalisch);
+          wird per ``max(ratio, 1.0001)`` abgefangen.
+        * Keine Skin-Effekt-Korrektur (bei f < 10 MHz vernachlässigbar
+          für typ. h=1.6 mm-Vias).
+        * Gegeninduktivität zwischen benachbarten Vias vernachlässigt
+          (valid für Pitch > 3·d).
+
+        Sanity-Zahl
+        -----------
+        Standard 1.6 mm-Via mit d=0.3 mm: L_via ≈ 1.0 nH. 80 Vias
+        → L_vias ≈ 80 nH. Bei 4-Layer-PCB (h=0.4 mm) entsprechend
+        L_via ≈ 0.23 nH.
+
+        Anpassung
+        ---------
+        Alternative Modelle (z. B. mit Via-Barrel-Kopplung, Wheeler-
+        Näherung, Koaxial-Formel bei GND-Ring) können hier eingesetzt
+        werden. Workflow: ``docs/FORMELN-ANPASSEN.md``.
         """
         h = g.h_via_mm * 1e-3
         d = g.d_via_mm * 1e-3
@@ -296,7 +362,7 @@ class CoilParameterServiceImpl:
 
         steps.append(TraceStep(
             name="L_vias – Induktivität der Vias",
-            formula="L_vias = n · µ₀·h / (2π) · (1 + ln(4h/d))",
+            formula=FORMULAS["L_vias"].latex,
             inputs={
                 "h_via_mm": g.h_via_mm,
                 "d_via_mm": g.d_via_mm,
@@ -318,10 +384,37 @@ class CoilParameterServiceImpl:
         steps: list[TraceStep],
         warnings: list[str],
     ) -> float:
-        """
-        Induktivität der Anschlussleitung in Henry.
+        """Induktivität der Anschlussleitung (CONNECTION-Segmente) [H].
+
+        Registry-Key
+        ------------
+        ``L_trace``  (siehe :mod:`pcb_rogowski.domain.formulas`).
+
+        Physik
+        ------
+        Identische Ruehli/Lorenz-Formel wie ``_calc_l_track``, aber auf
+        die als CONNECTION klassifizierten Segmente angewendet (Leitung
+        vom Spulenanfang zum Anschlusspunkt)::
 
             L_trace = µ₀·l / (2π) · (ln(2l/w) + 0.5 + 0.2235·w/l)
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * Single-ended Leitung im Freiraum.
+        * Keine Kopplung zur Spule selbst (meist OK, weil CONNECTION
+          außerhalb des Windungsbereichs liegt).
+        * ``l > w`` für logarithmische Konvergenz.
+
+        Sanity-Zahl
+        -----------
+        Typ. l=30 mm, w=0.5 mm: L_trace ≈ 28 nH. Größenordnung der
+        L_vias und damit nicht vernachlässigbar!
+
+        Anpassung
+        ---------
+        Siehe ``docs/FORMELN-ANPASSEN.md``. Dieselbe Formel wie
+        ``_calc_l_track`` -- bei Änderungen beide synchron halten
+        (oder eine gemeinsame Helper-Funktion extrahieren).
         """
         l = g.l_trace_mm * 1e-3
         w = g.w_trace_mm * 1e-3
@@ -335,7 +428,7 @@ class CoilParameterServiceImpl:
         )
         steps.append(TraceStep(
             name="L_trace – Induktivität der Anschlussleitung",
-            formula="L_trace = µ₀·l / (2π) · (ln(2l/w) + 0.5 + 0.2235·w/l)",
+            formula=FORMULAS["L_trace"].latex,
             inputs={"l_trace_mm": g.l_trace_mm, "w_trace_mm": g.w_trace_mm},
             output=l_trace_H * 1e9,
             unit="nH",
@@ -353,11 +446,39 @@ class CoilParameterServiceImpl:
         steps: list[TraceStep],
         warnings: list[str],
     ) -> float:
-        """
-        Temperaturbehafteter Serienwiderstand in Ohm.
+        """Temperaturbehafteter DC-Serienwiderstand [Ω].
 
-            ρ(T) = ρ₂₀ · (1 + α·(T − 20))
+        Registry-Key
+        ------------
+        ``R_series``  (siehe :mod:`pcb_rogowski.domain.formulas`).
+
+        Physik
+        ------
+        DC-Näherung mit linearem Temperatur-Koeffizient::
+
+            ρ(T) = ρ₂₀ · (1 + α·(T − 20 °C))
             R_C  = ρ(T) · l_total / (W · T_cu)
+
+        mit ``l_total = l_track + l_trace`` und ``A = W·T_cu``.
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * DC / niederfrequent (kein Skin-Effekt -- bei f < ca. 1 MHz OK,
+          bei höheren Frequenzen separat ``skin.r_ac(freq)`` nutzen).
+        * Konstante Temperatur über die gesamte Länge.
+        * Via-Widerstand vernachlässigt (Via-Barrel Cu-plating
+          ≈ 25 µm, typ. < 5 mΩ pro Via, vs. Track ~ 100 mΩ).
+
+        Sanity-Zahl
+        -----------
+        Cu @ 25 °C, l=350 mm, W=0.25 mm, T=35 µm:
+        R_C ≈ 1.72e-8 · 0.35 / (2.5e-4 · 3.5e-5) ≈ 0.69 Ω.
+
+        Anpassung
+        ---------
+        Für frequenzabhängige Modelle siehe ``domain/coil/skin.py``;
+        die Registry behält die DC-Formel. Workflow bei Änderungen:
+        ``docs/FORMELN-ANPASSEN.md``.
         """
         rho_20 = self._materials.rho_cu_ohm_m
         alpha = self._materials.temperature_coefficient_cu
@@ -375,7 +496,7 @@ class CoilParameterServiceImpl:
         r_ohm = rho_T * l_total / A
         steps.append(TraceStep(
             name="R_C – Serienwiderstand (temperaturkorrigiert)",
-            formula="R_C = ρ(T)·l_total / (W·T_cu)   mit  ρ(T) = ρ₂₀·(1 + α·ΔT)",
+            formula=FORMULAS["R_series"].latex,
             inputs={
                 "rho_20_nΩm": rho_20 * 1e9,
                 "alpha_1_K": alpha,
@@ -400,30 +521,63 @@ class CoilParameterServiceImpl:
         steps: list[TraceStep],
         warnings: list[str],
     ) -> float:
-        """
-        Interleiter-Kapazität (zwischen benachbarten Windungsleitern) in Farad.
+        """Interleiter-Kapazität zwischen benachbarten Windungszähnen [F].
 
-        Modell: Koplanare Streifen (CPS) ohne Grundebene.
-        Die Windungszähne liegen als parallele Leiter auf der PCB-Oberfläche,
-        ohne durchgehende Massefläche.  Die dominante Kapazität ist daher
-        zwischen den Leitern, nicht zu einer Ground-Plane.
+        Registry-Key
+        ------------
+        ``C_interturn_cps``  (siehe :mod:`pcb_rogowski.domain.formulas`).
 
-        Pro benachbartem Paar:
-            C'_CPS = ε₀ · ε_eff · K(k') / K(k)   [F/m]
+        Modell
+        ------
+        Koplanare Streifen (CPS) *ohne* Grundebene. Die Windungszähne
+        liegen als parallele Leiter auf der PCB-Oberfläche -- da keine
+        durchgehende Massefläche existiert, dominiert die Kante-zu-
+        Kante-Kapazität über die Kapazität gegen GND.
 
-        mit:
-            s   = p - W           (Lücke Kante-zu-Kante)
-            k   = s / (s + 2·W)   (CPS-Modulparameter)
-            k'  = √(1 - k²)
-            ε_eff = (1 + εr) / 2  (halb Substrat, halb Luft)
+        Kapazitätsbelag pro benachbartem Leiterpaar::
 
-        K(k)/K(k') wird per Hilberg-Näherung berechnet.
+            C'_CPS = ε₀ · ε_eff · K(k') / K(k)    [F/m]
 
-        Gesamtkapazität:
-            C_C = C'_CPS · l_seg · N_pairs
-        mit:
-            N_pairs = 2·(N-1)   (je Seite eine Nachbarschaft)
-            l_seg   = l_track / (2·N)  (mittlere Zahnlänge)
+        mit::
+
+            s     = p - W                  (Lücke Kante-zu-Kante)
+            k     = s / (s + 2·W)          (CPS-Modulparameter)
+            k'    = √(1 - k²)
+            ε_eff = (1 + εr) / 2           (halb Substrat, halb Luft)
+
+        ``K(k)/K(k')`` wird per Hilberg-Näherung approximiert
+        (max. Fehler 3e-6 über gesamtem k-Bereich).
+
+        Gesamtkapazität::
+
+            C_C     = C'_CPS · l_seg · N_pairs
+            N_pairs = 2 · (N - 1)           (je Seite ein Nachbarpaar)
+            l_seg   = l_track / (2 · N)     (mittlere Zahnlänge)
+
+        Annahmen / Gültigkeitsbereich
+        -----------------------------
+        * Keine GND-Plane auf benachbarter Lage (sonst dominiert C_gnd
+          und das CPS-Modell unterschätzt um Faktor 5-20).
+        * p > W  (sonst s ≤ 0 → Windungen überlappen sich).
+        * N ≥ 2  (mindestens ein Paar).
+        * Quasi-statische Näherung (gilt bis Wellenlänge ≫ l_seg,
+          d. h. f < ~1 GHz für typ. 50 mm-Zähne).
+
+        Sanity-Zahl
+        -----------
+        FR-4, εr=4.4, W=0.25 mm, p=0.6 mm, N=40, l_track=320 mm:
+        → s=0.35 mm, k≈0.41, K(k)/K(k')≈0.78,
+           C'_CPS ≈ 24 pF/m, l_seg=4 mm, N_pairs=78
+           → C_C ≈ 7.5 pF. Bei Abweichungen > 20 % zum Bode100-Fit
+           ist meist ein verstecktes GND-Pad auf der Gegenlage der
+           Übeltater.
+
+        Anpassung
+        ---------
+        Alternative Modelle:
+        * Mit GND: ``ε_eff = ε_r`` und Mikrostreifen-Kapazität.
+        * Exakte Elliptic Integrals statt Hilberg: ``scipy.special.ellipk``.
+        Siehe ``docs/FORMELN-ANPASSEN.md``.
         """
         W = g.W_mm * 1e-3        # Spurenbreite [m]
         p = g.p_mm * 1e-3        # Pitch (Mitte-Mitte) [m]
@@ -473,11 +627,7 @@ class CoilParameterServiceImpl:
 
         steps.append(TraceStep(
             name="C_C – Interleiter-Kapazität (CPS-Modell)",
-            formula=(
-                "C'_CPS = ε₀·ε_eff · K(k')/K(k)\n"
-                "C_C    = C'_CPS · l_seg · N_pairs\n"
-                "k = s/(s+2W),  s = p-W,  ε_eff = (1+εr)/2"
-            ),
+            formula=FORMULAS["C_interturn_cps"].latex,
             inputs={
                 "eps_r": eps_r,
                 "eps_eff": eps_eff,

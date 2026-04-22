@@ -1304,7 +1304,7 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_d0606ec8f324
   layer_name: top_layer
   role: winding
@@ -1346,7 +1346,7 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_94c41b166424
   layer_name: top_layer
   role: winding
@@ -1376,7 +1376,7 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_e827aaca4829
   layer_name: top_layer
   role: winding
@@ -1448,7 +1448,7 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_9e1367e0cc1c
   layer_name: top_layer
   role: winding
@@ -1460,7 +1460,7 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_1a2ea96c2e13
   layer_name: top_layer
   role: winding
@@ -1478,31 +1478,31 @@ entries:
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_12183cb6e81f
   layer_name: top_layer
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_20640501f7da
   layer_name: top_layer
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_dee2d715da02
   layer_name: top_layer
   role: winding
   sigma: 1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_8f3f658a8c84
   layer_name: top_layer
   role: winding
   sigma: -1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_d4b32e417865
   layer_name: top_layer
   role: winding
@@ -1736,13 +1736,13 @@ entries:
   role: winding
   sigma: -1
   window_id: null
-  note: manuell:winding
+  note: manuell
 - feature_id: ln_6799b552ffdc
   layer_name: top_layer
-  role: connection
+  role: winding
   sigma: 0
   window_id: null
-  note: manuell:connection
+  note: manuell
 - feature_id: ln_257d2c49c99e
   layer_name: top_layer
   role: connection
@@ -2463,3 +2463,57 @@ entries:
   sigma: -1
   window_id: null
   note: manuell:winding
+- feature_id: ln_d019d9de2a67
+  layer_name: top_layer
+  role: winding
+  sigma: 1
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_dd1e159edafa
+  layer_name: bottom_layer
+  role: winding
+  sigma: -1
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_31dd7e763603
+  layer_name: bottom_layer
+  role: winding
+  sigma: -1
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_5d7ce14ded3e
+  layer_name: top_layer
+  role: winding
+  sigma: -1
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_7ac1523bb850
+  layer_name: bottom_layer
+  role: connection
+  sigma: 0
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_788e7b63d40c
+  layer_name: bottom_layer
+  role: connection
+  sigma: 0
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_26b6b0ba64bc
+  layer_name: bottom_layer
+  role: connection
+  sigma: 0
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_6b1dd04c5113
+  layer_name: top_layer
+  role: connection
+  sigma: 0
+  window_id: null
+  note: auto:gap-fill
+- feature_id: ln_e2d07aadac58
+  layer_name: mid-layer_1
+  role: return
+  sigma: -1
+  window_id: null
+  note: auto:gap-fill
